@@ -1,0 +1,20 @@
+﻿@model Asp_net_core_mvc.Models.Zoo
+
+<h2>Додати зоопарк</h2>
+<form asp-action="CreateZoo" asp-controller="home">
+    <p>
+        <label asp-for="Name">Name</label><br />
+        <input type="text" asp-for="Name" />
+    </p>
+    <p>
+        <label asp-for="Workers_Ammount">Workers_Ammount</label><br />
+        <input type="number" asp-for="Workers_Ammount" />
+    </p>
+    <p>
+        <label asp-for="Aviary_Ammount">Aviary_Ammount</label><br />
+        <input type="number" asp-for="Aviary_Ammount" />
+    </p>
+    <p>
+        <input type="submit" value="Відправити" />
+    </p>
+</form>

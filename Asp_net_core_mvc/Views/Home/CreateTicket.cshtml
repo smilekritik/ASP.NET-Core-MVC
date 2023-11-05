@@ -1,0 +1,20 @@
+﻿@model Asp_net_core_mvc.Models.Ticket
+
+<h2>Додати білет</h2>
+<form asp-action="CreateTicket" asp-controller="home">
+    <p>
+        <label asp-for="Zoo_ID">Zoo</label><br />
+        <input type="int" asp-for="Zoo_ID" />
+    </p>
+    <p>
+        <label asp-for="Cost">Cost</label><br />
+        <input type="decimal" asp-for="Cost" />
+    </p>
+    <p>
+        <label asp-for="Date">Date</label><br />
+        <input type="DateTime" asp-for="Date" />
+    </p>
+    <p>
+        <input type="submit" value="Відправити" />
+    </p>
+</form>
