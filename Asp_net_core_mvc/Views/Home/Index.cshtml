@@ -1,28 +1,4 @@
-﻿@*@model IEnumerable<Asp_net_core_mvc.Models.Ticket>
-
-<h2>Зоопарки</h2>
-<p><a asp-action="CreateTicket">Додати білет</a></p>
-<p><a asp-action="CreateZoo">Додати зоопарк</a></p>
-<table class="table">
-    <tr><th>Zoo</th><th>Cost</th><th>Date</th><th>Aviary_Ammount</th></tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Zoo</td>
-            <td>@item.Cost</td>
-            <td>@item.Date</td>
-            <td>
-                <a asp-action="EditTicket" asp-controller="Home" asp-route-id="@item.Id">Редагувати</a>
-            </td>
-            <td>
-                <form asp-controller="Home" asp-action="DeleteTciket" method="post" asp-route-id="@item.Id">
-                    <input type="submit" value="Видалити" />
-                </form>
-            </td>
-        </tr>
-    }
-</table>*@
-
+﻿
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Asp_net_core_mvc.Models
 @model IndexViewModel

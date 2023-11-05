@@ -20,11 +20,10 @@ namespace Asp_net_core_mvc.Controllers
 
         public async Task<IActionResult> Index(decimal? minCost, decimal? maxCost, int page = 1, SortState sortOrder = SortState.CostAsc)
         {
-            int pageSize = 3;   // количество элементов на странице
+            int pageSize = 3;
 
             IQueryable<Ticket> source = db.Ticket.Include(x => x.Zoo);
 
-            // Применяем фильтры по minCost и maxCost, если они заданы
             if (minCost.HasValue)
             {
                 source = source.Where(s => s.Cost >= minCost.Value);
@@ -58,34 +57,18 @@ namespace Asp_net_core_mvc.Controllers
             IndexViewModel viewModel = new IndexViewModel(items, pageViewModel);
             return View(viewModel);
         }
-        //public async Task<IActionResult> Index(int page = 1, SortState sortOrder = SortState.CostAsc)
-        //{
-        //    IQueryable<Ticket>? users = db.Ticket.Include(x => x.Zoo);
-
-        //    ViewData["CostSort"] = sortOrder == SortState.CostAsc ? SortState.CostDesc : SortState.CostAsc;
-        //    ViewData["DateSort"] = sortOrder == SortState.DateAsc ? SortState.DateDesc : SortState.DateAsc;
-        //    ViewData["ZooSort"] = sortOrder == SortState.ZooAsc ? SortState.ZooDesc : SortState.ZooAsc;
-
-        //    users = sortOrder switch
-        //    {
-        //        SortState.CostDesc => users.OrderByDescending(s => s.Cost),
-        //        SortState.DateAsc => users.OrderBy(s => s.Date),
-        //        SortState.DateDesc => users.OrderByDescending(s => s.Date),
-        //        SortState.ZooAsc => users.OrderBy(s => s.Zoo!.Id),
-        //        SortState.ZooDesc => users.OrderByDescending(s => s.Zoo!.Id),
-        //        _ => users.OrderBy(s => s.Cost),
-        //    };
-        //    return View(await users.AsNoTracking().ToListAsync());
-        //}
         public IActionResult CreateTicket()
         {
+            var zooIds = db.Zoo.Select(z => z.Id).ToList();
+            ViewBag.ZooIds = new SelectList(zooIds);
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateTicket(Ticket ticket)
+        public async Task<IActionResult> CreateTicket(Ticket ticket, int selectedZooId)
         {
             if (ModelState.IsValid)
             {
+                ticket.Zoo = await db.Zoo.FirstOrDefaultAsync(z => z.Id == selectedZooId);
                 db.Ticket.Add(ticket);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -114,7 +97,7 @@ namespace Asp_net_core_mvc.Controllers
             if (id != null)
             {
                 Ticket? ticket = await db.Ticket.FirstOrDefaultAsync(p => p.Id == id);
-                var zooIds = db.Zoo.Select(z => z.Id).ToList(); // Получите список айди из базы данных
+                var zooIds = db.Zoo.Select(z => z.Id).ToList();
                 ViewBag.ZooIds = new SelectList(zooIds);
                 if (ticket != null) return View(ticket);
             }
@@ -128,10 +111,9 @@ namespace Asp_net_core_mvc.Controllers
                 ticket.Zoo = await db.Zoo.FirstOrDefaultAsync(z => z.Id == selectedZooId);
                 db.Ticket.Update(ticket);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index"); // Перенаправьте пользователя на страницу списка билетов или другую страницу
+                return RedirectToAction("Index");
             }
 
-            // Если ModelState недействителен, верните форму с сообщениями об ошибках
             return View(ticket);
         }
 

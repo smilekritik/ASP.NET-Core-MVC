@@ -3,8 +3,10 @@
 <h2>Додати білет</h2>
 <form asp-action="CreateTicket" asp-controller="home">
     <p>
-        <label asp-for="Zoo_ID">Zoo</label><br />
-        <input type="int" asp-for="Zoo_ID" />
+        <label asp-for="Zoo">Zoo</label><br />
+        <select asp-for="Zoo_ID" asp-items="ViewBag.ZooIds" class="form-control">
+        <option value="">Оберіть айді зоопарку</option>
+        </select>
     </p>
     <p>
         <label asp-for="Cost">Cost</label><br />
