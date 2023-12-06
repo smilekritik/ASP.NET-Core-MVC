@@ -3,9 +3,36 @@
 @using Asp_net_core_mvc.Models
 @model IndexViewModel
 
+@using Microsoft.AspNetCore.Identity
+@using Asp_net_core_mvc.Areas.Identity.Data
+
+@inject SignInManager<Asp_net_core_mvcUser> SignInManager
+@inject UserManager<Asp_net_core_mvcUser> UserManager
+@*@UserManager.GetUserName(User)== "admin@gmail.com"
+    IsInRole
+*@
 <h2>Білети</h2>
-<p><a asp-action="CreateTicket">Додати білет</a></p>
-<p><a asp-action="CreateZoo">Додати зоопарк</a></p>
+@{
+
+    var user = await UserManager.GetUserAsync(User);
+    var isAdmin = false;
+    if (user != null)
+    {
+        isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+    @*var test = await UserManager.GetRolesAsync(user);
+        foreach (var item in test)
+        {
+            
+        }
+        *@
+        
+    }
+    if (isAdmin)
+    {
+    <p><a asp-action="CreateTicket">Додати білет</a></p>
+    <p><a asp-action="CreateZoo">Додати зоопарк</a></p>
+    }
+}
 <table>
     <tr>
         <th>
@@ -39,19 +66,24 @@
             <input type="submit" value="Фільтр" />
         </div>
     </form>
-    @foreach (Ticket u in Model.Tickets)
-    {
-        <tr><td>@u.Cost</td><td>@u.Date</td><td>@u.Zoo_ID</td>
-            <td>
-                <a asp-action="EditTicket" asp-controller="Home" asp-route-id="@u.Id">Редагувати</a>
-            </td>
-            <td>
-                <form asp-controller="Home" asp-action="DeleteTicket" method="post" asp-route-id="@u.Id">
-                    <input type="submit" value="Видалити" />
-                </form>
-            </td>
-        </tr>
-    }
+    
+                    @foreach (Ticket u in Model.Tickets)
+            {
+                        <tr><td>@u.Cost</td><td>@u.Date</td><td>@u.Zoo_ID</td>
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <a asp-action="EditTicket" asp-controller="Home" asp-route-id="@u.Id">Редагувати</a>
+                            </td>
+                            <td>
+                                <form asp-controller="Home" asp-action="DeleteTicket" method="post" asp-route-id="@u.Id">
+                                    <input type="submit" value="Видалити" />
+                                </form>
+                            </td>
+                        }
+                        </tr>
+            }
+
 </table>
 <p>
     @if (Model.PageViewModel.HasPreviousPage)

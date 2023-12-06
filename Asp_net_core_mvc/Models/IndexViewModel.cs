@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Asp_net_core_mvc.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Asp_net_core_mvc.Models
 {

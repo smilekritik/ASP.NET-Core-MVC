@@ -1,9 +1,14 @@
-﻿using Asp_net_core_mvc.Models;
+﻿using Asp_net_core_mvc.Data;
+using Asp_net_core_mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Diagnostics;
+using System.Net.Sockets;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Asp_net_core_mvc.Controllers
@@ -11,13 +16,13 @@ namespace Asp_net_core_mvc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationContext db;
-        public HomeController(ILogger<HomeController> logger, ApplicationContext db)
+        private readonly Asp_net_core_mvcContext db;
+        public HomeController(ILogger<HomeController> logger, Asp_net_core_mvcContext db)
         {
             _logger = logger;
             this.db = db;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index(decimal? minCost, decimal? maxCost, int page = 1, SortState sortOrder = SortState.CostAsc)
         {
             int pageSize = 3;
@@ -66,6 +71,7 @@ namespace Asp_net_core_mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(Ticket ticket, int selectedZooId)
         {
+
             if (ModelState.IsValid)
             {
                 ticket.Zoo = await db.Zoo.FirstOrDefaultAsync(z => z.Id == selectedZooId);
@@ -79,8 +85,10 @@ namespace Asp_net_core_mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteTicket(int? id)
         {
+
             if (id != null)
             {
+                
                 Ticket? ticket = await db.Ticket.FirstOrDefaultAsync(p => p.Id == id);
                 if (ticket != null)
                 {
@@ -124,9 +132,18 @@ namespace Asp_net_core_mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateZoo(Zoo zoo)
         {
-            db.Zoo.Add(zoo);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (zoo.Aviary_Ammount == 0)
+            {
+                ModelState.AddModelError("Aviary_Ammount", "Кількість не повинна бути 0");
+            }
+            if (ModelState.IsValid)
+            {
+                db.Zoo.Add(zoo);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(zoo);
+            //return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
         [HttpPost]

@@ -2,19 +2,34 @@
 
 <h2>Додати зоопарк</h2>
 <form asp-action="CreateZoo" asp-controller="home">
+    @*<div class="validation validation-summary-valid" data-valmsg-summary="true">
+    <ul>
+        <li style="display:none"></li>
+    </ul>
+    </div>*@
     <p>
         <label asp-for="Name">Name</label><br />
         <input type="text" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
     </p>
     <p>
         <label asp-for="Workers_Ammount">Workers_Ammount</label><br />
         <input type="number" asp-for="Workers_Ammount" />
+        <span asp-validation-for="Workers_Ammount"></span>
     </p>
     <p>
         <label asp-for="Aviary_Ammount">Aviary_Ammount</label><br />
         <input type="number" asp-for="Aviary_Ammount" />
+        <span asp-validation-for="Aviary_Ammount"></span>
     </p>
     <p>
         <input type="submit" value="Відправити" />
     </p>
 </form>
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}
