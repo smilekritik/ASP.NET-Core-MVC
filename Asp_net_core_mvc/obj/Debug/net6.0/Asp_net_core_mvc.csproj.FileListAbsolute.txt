@@ -350,3 +350,7 @@ D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Microsoft.Extensions.
 D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\obj\Debug\net6.0\Asp_net_core_mvc.MvcApplicationPartsAssemblyInfo.cs
+D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\work\ASP.NET-Core-MVC\Asp_net_core_mvc\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Asp_net_core_mvc.Data;
 using Asp_net_core_mvc.Areas.Identity.Data;
 using System;
+using Asp_net_core_mvc.Models;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,16 +22,27 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication();
 
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zoo API", Version = "v1" });
+});
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 
     app.UseHsts();
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+};
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -43,4 +56,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.MapZooEndpoints();
+
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name V1");
+    });
+
 app.Run();
